@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Wedding Quote Tool | Albany Capture</title>
+<meta name="description" content="Get an instant quote for Chicago wedding photography and videography. Calculate rates for 2026 weddings.">
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "Service",
+"name": "Wedding Photography Quote Calculator",
+"provider": {
+"@type": "LocalBusiness",
+"name": "Albany Capture",
+"image": "https://www.albanycapture.com/logo.png",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Chicago",
+"addressRegion": "IL",
+"addressCountry": "US"
+}
+},
+"areaServed": "Chicago",
+"description": "Instant pricing calculator for wedding photography and videography services in Chicago.",
+"offers": {
+"@type": "Offer",
+"priceCurrency": "USD",
+"priceSpecification": {
+"@type": "UnitPriceSpecification",
+"minPrice": "100",
+"unitCode": "HUR"
+}
+}
+}
+</script>
+
+<style>
+:root { --gold: #af935d; --dark: #2c2c2c; --success-bg: #f0fff4; --success-text: #2f855a; --gold-light: #f5eedf; }
+
+.service-card {
+  border: 1.5px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  background: white;
+}
+.service-card:hover {
+  border-color: var(--gold);
+  background: #fdf9f3;
+}
+.service-card.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+.service-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.service-card-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.25em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  color: var(--dark);
+  margin: 0;
+}
+.service-card-price {
+  font-size: 0.78em;
+  color: #999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.service-card-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #ddd;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: white;
+}
+.service-card.selected .service-card-check {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+/* Slider panel */
+.service-hours-panel {
+  display: none;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e8d9c0;
+}
+.service-card.selected .service-hours-panel {
+  display: block;
+}
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.slider-label span {
+  font-size: 0.75em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #888;
+}
+.slider-label strong {
+  font-family: 'Georgia', serif;
+  font-size: 1.1em;
+  color: var(--dark);
+}
+.hour-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, var(--gold) 0%, var(--gold) 50%, #e8e0d5 50%, #e8e0d5 100%);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+  margin: 6px 0;
+}
+.hour-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--gold);
+  box-shadow: 0 2px 8px rgba(175, 147, 93, 0.25), 0 1px 3px rgba(0,0,0,0.1);
+  cursor: grab;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.hour-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 3px 12px rgba(175, 147, 93, 0.4), 0 1px 4px rgba(0,0,0,0.12);
+  transform: scale(1.1);
+}
+.hour-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 5px rgba(175, 147, 93, 0.15);
+}
+.hour-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--gold);
+  box-shadow: 0 2px 8px rgba(175, 147, 93, 0.25);
+  cursor: grab;
+}
+.hour-slider::-moz-range-track {
+  height: 4px;
+  border-radius: 99px;
+  background: #e8e0d5;
+}
+.slider-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+  color: #c5b99a;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+body { font-family: 'Segoe UI', sans-serif; background: #f9f9f9; color: var(--dark); padding: 20px; line-height: 1.6; }
+.calc-card { max-width: 500px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; }
+h2 { border-bottom: 2px solid var(--gold); padding-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 3px; font-weight: 300; margin-top: 0; }
+.label-head { display: block; text-align: center; font-size: 0.75em; font-weight: bold; letter-spacing: 2px; margin: 20px 0 8px; text-transform: uppercase; color: #777; }
+input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background: #fafafa; }
+.checkbox-group { display: flex; align-items: center; gap: 12px; margin: 10px 0; cursor: pointer; font-size: 0.95em; }
+.checkbox-group input { width: auto; accent-color: var(--gold); }
+.total-box { margin-top: 25px; padding: 30px; background: #f8f8f8; border-radius: 8px; text-align: center; border: 1px solid #efefef; }
+#total-price { font-size: 2.8em; color: var(--gold); display: block; font-weight: bold; }
+.discount-badge { color: var(--success-text); font-weight: bold; font-size: 0.9em; display: none; background: var(--success-bg); padding: 5px 10px; border-radius: 4px; margin-top: 5px; display: inline-block; }
+.btn { background: var(--dark); color: white; border: none; width: 100%; padding: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; border-radius: 4px; }
+.btn:hover { background: #000; }
+
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.btn.sending {
+  animation: pulse-gold 1.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); margin-top: 10px; }
+
+#inquiryForm { display: none; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+#successMessage { display: none; text-align: center; margin-top: 30px; padding: 20px; background: var(--success-bg); border: 1px solid #c6f6d5; border-radius: 8px; color: var(--success-text); }
+#successMessage h3 { margin: 0 0 10px 0; }
+</style>
+</head>
+<body>
+
+<div class="calc-card" id="quote-content">
+<h2>Design Your Coverage</h2>
+
+<span class="label-head">Wedding Date</span>
+<input type="date" id="weddingDate">
+
+<span class="label-head">Services Needed</span>
+
+<div class="service-card" id="photoCard" onclick="toggleService('photo')">
+  <div class="service-card-header">
+    <div>
+      <p class="service-card-title">Photography</p>
+      <span class="service-card-price">From $100 / hr</span>
+    </div>
+    <div class="service-card-check" id="photoCheck">✓</div>
+  </div>
+  <div class="service-hours-panel" onclick="event.stopPropagation()">
+    <div class="slider-label">
+      <span>Hours of Coverage</span>
+      <strong><span id="photoHoursDisplay">6</span> hrs</strong>
+    </div>
+    <input type="range" class="hour-slider" id="photoHours" min="3" max="12" value="6" step="1"
+      oninput="updateSlider('photo', this.value)" onclick="event.stopPropagation()">
+    <div class="slider-range"><span>3 hrs</span><span>12 hrs</span></div>
+    <small style="display:block;text-align:center;color:#aaa;font-size:0.72em;margin-top:8px;letter-spacing:1px;">3-hour minimum on all services</small>
+  </div>
+</div>
+
+<div class="service-card" id="videoCard" onclick="toggleService('video')">
+  <div class="service-card-header">
+    <div>
+      <p class="service-card-title">Videography</p>
+      <span class="service-card-price">From $150 / hr</span>
+    </div>
+    <div class="service-card-check" id="videoCheck">✓</div>
+  </div>
+  <div class="service-hours-panel" onclick="event.stopPropagation()">
+    <div class="slider-label">
+      <span>Hours of Coverage</span>
+      <strong><span id="videoHoursDisplay">6</span> hrs</strong>
+    </div>
+    <input type="range" class="hour-slider" id="videoHours" min="3" max="12" value="6" step="1"
+      oninput="updateSlider('video', this.value)" onclick="event.stopPropagation()">
+    <div class="slider-range"><span>3 hrs</span><span>12 hrs</span></div>
+    <small style="display:block;text-align:center;color:#aaa;font-size:0.72em;margin-top:8px;letter-spacing:1px;">3-hour minimum on all services</small>
+  </div>
+</div>
+
+<!-- Hidden checkboxes for backward compat with calculate() -->
+<input type="checkbox" id="photo" style="display:none;">
+<input type="checkbox" id="video" style="display:none;">
+<input type="number" id="hours" style="display:none;" value="6">
+
+<span class="label-head">Add-Ons</span>
+
+<div class="checkbox-group"><input type="checkbox" class="addon" id="secondPhoto"> Second Photographer</div>
+<div id="secondPhotoHoursWrap" style="display:none;margin:0 0 10px 28px;">
+  <select id="secondPhotoHours" style="width:100%;padding:10px;border:1px solid #eee;border-radius:4px;font-size:0.9rem;background:#fafafa;color:#555;">
+    <option value="">— Select hours —</option>
+    <option value="3">3 hours</option>
+    <option value="4">4 hours</option>
+    <option value="5">5 hours</option>
+    <option value="6">6 hours</option>
+    <option value="7">7 hours</option>
+    <option value="8">8 hours</option>
+    <option value="9">9 hours</option>
+    <option value="10">10 hours</option>
+    <option value="11">11 hours</option>
+    <option value="12">12 hours</option>
+  </select>
+</div>
+
+<div class="checkbox-group"><input type="checkbox" class="addon" id="contentCreator"> Content Creator</div>
+<div id="contentCreatorHoursWrap" style="display:none;margin:0 0 10px 28px;">
+  <select id="contentCreatorHours" style="width:100%;padding:10px;border:1px solid #eee;border-radius:4px;font-size:0.9rem;background:#fafafa;color:#555;">
+    <option value="">— Select hours —</option>
+    <option value="3">3 hours</option>
+    <option value="4">4 hours</option>
+    <option value="5">5 hours</option>
+    <option value="6">6 hours</option>
+    <option value="7">7 hours</option>
+    <option value="8">8 hours</option>
+    <option value="9">9 hours</option>
+    <option value="10">10 hours</option>
+    <option value="11">11 hours</option>
+    <option value="12">12 hours</option>
+  </select>
+</div>
+
+<div class="total-box">
+<strong>Estimated Investment</strong>
+<span id="total-price">$0</span>
+<div style="text-align:center;"><span id="discount-display" class="discount-badge" style="display:none;"></span></div>
+<p style="font-size:0.72em;color:#aaa;margin:14px 0 0 0;line-height:1.6;letter-spacing:0.3px;">
+  This is an estimate only and subject to change based on your specific event details.
+  <a href="https://calendly.albanycapture.com/#/albanycapturevirtual" target="_blank"
+     style="color:var(--gold);text-decoration:none;font-weight:bold;">Book a consultation</a>
+  for a more accurate quote tailored to your wedding.
+</p>
+</div>
+
+<div id="action-buttons">
+<button class="btn" onclick="showInquiry()">Inquire Availability</button>
+<button class="btn btn-outline" onclick="downloadPDF()">Download Quote PDF</button>
+</div>
+
+<div id="inquiryForm">
+<form id="wedding-contact-form">
+
+<div style="display:flex;gap:12px;">
+<div style="flex:1;"><span class="label-head">First Name</span>
+<input type="text" id="user_first_name" required></div>
+<div style="flex:1;"><span class="label-head">Last Name</span>
+<input type="text" id="user_last_name" required></div>
+</div>
+
+<span class="label-head">Your Email</span>
+<input type="email" id="user_email" required>
+
+<!-- ✅ NEW: Phone field for CRM -->
+<span class="label-head">Phone Number</span>
+<input type="tel" id="user_phone" placeholder="(555) 000-0000">
+
+<span class="label-head">Message</span>
+<textarea id="message" rows="4" placeholder="Tell me more about your wedding!"></textarea>
+
+<button type="submit" class="btn" style="background: var(--gold);">Send Message</button>
+
+</form>
+</div>
+
+<div id="successMessage">
+<h3>Request Received!</h3>
+<p>Thank you for inquiring. I have received your details and will be in touch shortly!</p>
+</div>
+
+</div>
+
+<script>
+
+// --- SETUP ---
+(function() {
+emailjs.init("MJMbQuwS_AO0Nz3cR");
+})();
+
+// No default date — client selects their own
+
+// Service card toggle
+function toggleService(service) {
+  const checkbox = document.getElementById(service);
+  const card = document.getElementById(service + 'Card');
+  checkbox.checked = !checkbox.checked;
+  if (checkbox.checked) {
+    card.classList.add('selected');
+  } else {
+    card.classList.remove('selected');
+  }
+  calculate();
+}
+
+// Slider update
+function updateSlider(service, value) {
+  document.getElementById(service + 'HoursDisplay').innerText = value;
+  // Update gradient fill
+  const slider = document.getElementById(service + 'Hours');
+  const pct = ((value - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${pct}%, #e8e0d5 ${pct}%, #e8e0d5 100%)`;
+  calculate();
+}
+
+// Pricing Logic
+const holidays = ["2026-01-01", "2026-07-04", "2026-12-25", "2026-12-31"];
+
+const pricing = {
+photo: { low: { weekday: 100, friSun: 200, sat: 250 }, high: { weekday: 150, friSun: 225, sat: 350 } },
+video: { low: { weekday: 150, friSun: 250, sat: 300 }, high: { weekday: 200, friSun: 250, sat: 375 } },
+holiday: { weekday: 150, friSun: 225, sat: 350 }
+};
+
+function calculate() {
+const dateVal = document.getElementById('weddingDate').value;
+if (!dateVal) return;
+
+const date = new Date(dateVal + 'T00:00:00');
+const month = date.getMonth();
+const day = date.getDay();
+const hours = Math.max(3, parseFloat(document.getElementById('hours').value) || 3); // kept for add-on fallback
+
+const isHighSeason = (month >= 4 && month <= 9);
+const season = isHighSeason ? 'high' : 'low';
+let dayType = (day === 0 || day === 5) ? 'friSun' : (day === 6 ? 'sat' : 'weekday');
+const isHoliday = holidays.includes(dateVal);
+
+let photoRate = isHoliday ? pricing.holiday[dayType] : pricing.photo[season][dayType];
+let videoRate = isHoliday ? pricing.holiday[dayType] : pricing.video[season][dayType];
+
+let subtotal = 0;
+const usePhoto = document.getElementById('photo').checked;
+const useVideo = document.getElementById('video').checked;
+const photoHrs = parseFloat(document.getElementById('photoHours').value) || 6;
+const videoHrs = parseFloat(document.getElementById('videoHours').value) || 6;
+
+if (usePhoto) subtotal += (photoRate * photoHrs);
+if (useVideo) subtotal += (videoRate * videoHrs);
+
+// Discount Logic
+const now = new Date();
+const sixMonthsOut = new Date(now.setMonth(now.getMonth() + 6));
+const isEarlyBooking = new Date(dateVal) > sixMonthsOut;
+let discountMsg = "";
+let finalMultiplier = 1.0;
+
+if (usePhoto && useVideo) {
+finalMultiplier = 0.85;
+discountMsg = "15% Bundle Discount Applied!";
+} else if (isEarlyBooking) {
+finalMultiplier = 0.90;
+discountMsg = "10% Early Booking Discount Applied!";
+}
+
+subtotal *= finalMultiplier;
+const badge = document.getElementById('discount-display');
+if (finalMultiplier < 1.0) {
+badge.innerText = discountMsg;
+badge.style.display = "inline-block";
+} else {
+badge.style.display = "none";
+}
+
+// Add-Ons — each uses its own selected hours
+if (document.getElementById('secondPhoto').checked) {
+  const spHrs = parseFloat(document.getElementById('secondPhotoHours').value) || 0;
+  subtotal += (85 * spHrs);
+}
+if (document.getElementById('contentCreator').checked) {
+  const ccHrs = parseFloat(document.getElementById('contentCreatorHours').value) || 0;
+  subtotal += (85 * ccHrs);
+}
+
+document.getElementById('total-price').innerText = "$" + Math.round(subtotal).toLocaleString();
+}
+
+// PDF Download
+function downloadPDF() {
+const element = document.getElementById('quote-content');
+const actionButtons = document.getElementById('action-buttons');
+const inquiryForm = document.getElementById('inquiryForm');
+actionButtons.style.display = 'none';
+const formWasVisible = inquiryForm.style.display === 'block';
+inquiryForm.style.display = 'none';
+const opt = { margin: 0.5, filename: 'Wedding_Quote_2026.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+html2pdf().set(opt).from(element).save().then(() => {
+actionButtons.style.display = 'block';
+if(formWasVisible) inquiryForm.style.display = 'block';
+});
+}
+
+function showInquiry() {
+document.getElementById('inquiryForm').style.display = 'block';
+document.getElementById('action-buttons').style.display = 'none';
+}
+
+// --- SUBMIT LISTENER (THE BRAIN) ---
+document.getElementById('wedding-contact-form').addEventListener('submit', function(event) {
+event.preventDefault();
+
+// Immediately disable button and show loading state to prevent double-submit
+const submitBtn = this.querySelector('button[type="submit"]');
+submitBtn.disabled = true;
+submitBtn.innerText = 'Sending...';
+submitBtn.classList.add('sending');
+submitBtn.style.cursor = 'not-allowed';
+
+// 1. Build Services List
+let services = [];
+let hasPhoto = document.getElementById('photo').checked;
+let hasVideo = document.getElementById('video').checked;
+
+if (hasPhoto) {
+  const hrs = document.getElementById('photoHours').value || '6';
+  services.push("Photography (" + hrs + " hrs)");
+}
+if (hasVideo) {
+  const hrs = document.getElementById('videoHours').value || '6';
+  services.push("Videography (" + hrs + " hrs)");
+}
+
+// 2. Build Add-Ons
+let addons = [];
+if (document.getElementById('secondPhoto').checked) {
+  const spHrs = document.getElementById('secondPhotoHours').value || '?';
+  addons.push("Second Photographer (" + spHrs + " hrs)");
+}
+if (document.getElementById('contentCreator').checked) {
+  const ccHrs = document.getElementById('contentCreatorHours').value || '?';
+  addons.push("Content Creator (" + ccHrs + " hrs)");
+}
+
+// 3. --- GALLERY LOGIC ---
+let dynamicGalleryUrl = "https://albanycapture.mypixieset.com/wedding-photography-portfolio/";
+let dynamicGalleryText = "View Our Portfolio";
+
+if (hasVideo) {
+dynamicGalleryUrl = "https://gallery.albanycapture.com/aileenandstephenswedding/";
+dynamicGalleryText = "Watch Real Wedding Films";
+} else if (hasPhoto) {
+dynamicGalleryUrl = "https://albanycapture.pixieset.com/madelineandjacobswedding/";
+dynamicGalleryText = "View Full Wedding Galleries";
+}
+
+const currentDiscount = document.getElementById('discount-display').style.display !== 'none'
+? document.getElementById('discount-display').innerText
+: "Standard Rate";
+
+// ✅ Build shared data object once
+const formData = {
+from_name:     document.getElementById('user_first_name').value + ' ' + document.getElementById('user_last_name').value,
+user_first_name: document.getElementById('user_first_name').value,
+user_last_name:  document.getElementById('user_last_name').value,
+user_email:    document.getElementById('user_email').value,
+user_phone:    document.getElementById('user_phone').value || 'Not provided',
+wedding_date:  document.getElementById('weddingDate').value,
+hours:         (hasPhoto ? 'Photo: ' + (document.getElementById('photoHours').value || '?') + ' hrs' : '') +
+               (hasPhoto && hasVideo ? ' / ' : '') +
+               (hasVideo ? 'Video: ' + (document.getElementById('videoHours').value || '?') + ' hrs' : ''),
+quote_amount:  document.getElementById('total-price').innerText + " (" + currentDiscount + ")",
+message:       document.getElementById('message').value,
+services_list: services.join(", ") || "No Services Selected",
+addons_list:   addons.join(", ") || "None"
+};
+
+// 4. ✅ CLIENT-FACING EMAIL (existing template — sends to client + CC to you)
+const clientParams = {
+...formData,
+email:        formData.user_email,   // EmailJS "To" field
+gallery_url:  dynamicGalleryUrl,
+gallery_text: dynamicGalleryText
+};
+
+// 5. ✅ INTERNAL CRM EMAIL (new clean template — sends only to pedro@albanycapture.com)
+// Subject in your EmailJS template should be: NEW LEAD | {{wedding_date}} | {{from_name}}
+// Body should be plain text only — no HTML, no signature:
+//
+// LEAD_NAME: {{from_name}}
+// LEAD_EMAIL: {{user_email}}
+// LEAD_PHONE: {{user_phone}}
+// WEDDING_DATE: {{wedding_date}}
+// SERVICES: {{services_list}}
+// ADDONS: {{addons_list}}
+// HOURS: {{hours}}
+// QUOTE: {{quote_amount}}
+// MESSAGE: {{message}}
+// SOURCE: Website Quote Tool
+
+// Split email to prevent EmailJS asterisk auto-formatting
+const emailVal = document.getElementById('user_email').value;
+const emailParts = emailVal.split('@');
+
+// Explicitly exclude user_email from internalParams — use split version only
+// so EmailJS never sees a complete email address and won't wrap it in asterisks
+const { user_email, ...formDataNoEmail } = formData;
+
+const internalParams = {
+  ...formDataNoEmail,
+  email_local:  emailParts[0],
+  email_domain: emailParts[1] || ''
+};
+
+// 6. ✅ FIRE BOTH SENDS IN SEQUENCE
+emailjs.send('service_vthnr9p', 'template_if84i1q', clientParams)
+  .then(function() {
+    // Client email succeeded — now fire internal CRM email
+    return emailjs.send('service_vthnr9p', 'template_5pk3y5p', internalParams);
+  })
+  .then(function() {
+    // Both succeeded — show confirmation immediately and scroll into view
+    document.getElementById('inquiryForm').style.display = 'none';
+    const success = document.getElementById('successMessage');
+    success.style.display = 'block';
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('wedding-contact-form').reset();
+  })
+  .catch(function(error) {
+    // Re-enable button on failure so they can try again
+    submitBtn.disabled = false;
+    submitBtn.innerText = 'Send Message';
+    submitBtn.classList.remove('sending');
+    submitBtn.style.cursor = 'pointer';
+    alert('Failed to send inquiry. Please try again or email us directly.');
+    console.error('EmailJS Error:', error);
+  });
+
+});
+
+// Show/hide addon hour dropdowns
+document.getElementById('secondPhoto').addEventListener('change', function() {
+  document.getElementById('secondPhotoHoursWrap').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('secondPhotoHours').value = '';
+  calculate();
+});
+document.getElementById('contentCreator').addEventListener('change', function() {
+  document.getElementById('contentCreatorHoursWrap').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('contentCreatorHours').value = '';
+  calculate();
+});
+document.getElementById('secondPhotoHours').addEventListener('change', calculate);
+document.getElementById('contentCreatorHours').addEventListener('change', calculate);
+
+document.querySelectorAll('input').forEach(el => el.addEventListener('change', calculate));
+
+calculate();
+
+</script>
+</body>
+</html>
