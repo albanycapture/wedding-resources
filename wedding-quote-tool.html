@@ -205,6 +205,11 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 #inquiryForm { display: none; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
 #successMessage { display: none; text-align: center; margin-top: 30px; padding: 20px; background: var(--success-bg); border: 1px solid #c6f6d5; border-radius: 8px; color: var(--success-text); }
 #successMessage h3 { margin: 0 0 10px 0; }
+
+/* Date gate — everything stays locked until a wedding date is chosen */
+#lockable { transition: opacity 0.3s ease; }
+#lockable.locked { opacity: 0.4; pointer-events: none; user-select: none; filter: grayscale(0.35); }
+.date-hint { text-align: center; font-size: 0.8em; color: var(--gold); font-style: italic; margin: 12px 0 0; }
 </style>
 </head>
 <body>
@@ -214,6 +219,9 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 
 <span class="label-head">Wedding Date</span>
 <input type="date" id="weddingDate">
+<p id="dateHint" class="date-hint">Please select your wedding date to begin.</p>
+
+<div id="lockable" class="locked">
 
 <span class="label-head">Services Needed</span>
 
@@ -340,6 +348,8 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 </form>
 </div>
 
+</div><!-- /lockable -->
+
 <div id="successMessage">
 <h3>Request Received!</h3>
 <p>Thank you for inquiring. I have received your details and will be in touch shortly!</p>
@@ -414,38 +424,40 @@ const videoHrs = parseFloat(document.getElementById('videoHours').value) || 6;
 if (usePhoto) subtotal += (photoRate * photoHrs);
 if (useVideo) subtotal += (videoRate * videoHrs);
 
-// Discount Logic
-const now = new Date();
-const sixMonthsOut = new Date(now.setMonth(now.getMonth() + 6));
-const isEarlyBooking = new Date(dateVal) > sixMonthsOut;
-let discountMsg = "";
-let finalMultiplier = 1.0;
-
-if (usePhoto && useVideo) {
-finalMultiplier = 0.85;
-discountMsg = "15% Bundle Discount Applied!";
-} else if (isEarlyBooking) {
-finalMultiplier = 0.90;
-discountMsg = "10% Early Booking Discount Applied!";
-}
-
-subtotal *= finalMultiplier;
-const badge = document.getElementById('discount-display');
-if (finalMultiplier < 1.0) {
-badge.innerText = discountMsg;
-badge.style.display = "inline-block";
-} else {
-badge.style.display = "none";
-}
-
-// Add-Ons — each uses its own selected hours
+// Add-Ons — added to the subtotal BEFORE discounts so they get discounted too
 if (document.getElementById('secondPhoto').checked) {
   const spHrs = parseFloat(document.getElementById('secondPhotoHours').value) || 0;
   subtotal += (85 * spHrs);
 }
 if (document.getElementById('contentCreator').checked) {
   const ccHrs = parseFloat(document.getElementById('contentCreatorHours').value) || 0;
-  subtotal += (85 * ccHrs);
+  subtotal += (150 * ccHrs);
+}
+
+// Discount Logic — applies to everything above (services + add-ons); discounts stack
+const now = new Date();
+const sixMonthsOut = new Date(now.setMonth(now.getMonth() + 6));
+const isEarlyBooking = new Date(dateVal) > sixMonthsOut;
+let finalMultiplier = 1.0;
+let discounts = [];
+
+if (usePhoto && useVideo) {
+  finalMultiplier *= 0.85;
+  discounts.push("15% Bundle");
+}
+if (isEarlyBooking) {
+  finalMultiplier *= 0.90;
+  discounts.push("10% Early Booking");
+}
+
+subtotal *= finalMultiplier;
+
+const badge = document.getElementById('discount-display');
+if (finalMultiplier < 1.0) {
+  badge.innerText = discounts.join(" + ") + " Discount Applied!";
+  badge.style.display = "inline-block";
+} else {
+  badge.style.display = "none";
 }
 
 document.getElementById('total-price').innerText = "$" + Math.round(subtotal).toLocaleString();
@@ -474,6 +486,12 @@ document.getElementById('action-buttons').style.display = 'none';
 // --- SUBMIT LISTENER (THE BRAIN) ---
 document.getElementById('wedding-contact-form').addEventListener('submit', function(event) {
 event.preventDefault();
+
+// Safety net: block submission if no wedding date is set
+if (!document.getElementById('weddingDate').value) {
+  alert('Please select your wedding date first.');
+  return;
+}
 
 // Immediately disable button and show loading state to prevent double-submit
 const submitBtn = this.querySelector('button[type="submit"]');
@@ -619,6 +637,16 @@ document.getElementById('contentCreatorHours').addEventListener('change', calcul
 
 document.querySelectorAll('input').forEach(el => el.addEventListener('change', calculate));
 
+// --- DATE GATE: nothing is usable until a wedding date is chosen ---
+function updateLock() {
+  const hasDate = !!document.getElementById('weddingDate').value;
+  document.getElementById('lockable').classList.toggle('locked', !hasDate);
+  document.getElementById('dateHint').style.display = hasDate ? 'none' : 'block';
+}
+document.getElementById('weddingDate').addEventListener('change', updateLock);
+document.getElementById('weddingDate').addEventListener('input', updateLock);
+
+updateLock();
 calculate();
 
 </script>
