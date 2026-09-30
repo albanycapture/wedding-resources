@@ -409,7 +409,7 @@ const hours = Math.max(3, parseFloat(document.getElementById('hours').value) || 
 
 const isHighSeason = (month >= 4 && month <= 9);
 const season = isHighSeason ? 'high' : 'low';
-let dayType = (day === 0 || day === 5) ? 'friSun' : (day === 6 ? 'sat' : 'weekday');
+let dayType = (day === 0 || day === 6) ? 'sat' : (day === 5 ? 'friSun' : 'weekday');
 const isHoliday = holidays.includes(dateVal);
 
 let photoRate = isHoliday ? pricing.holiday[dayType] : pricing.photo[season][dayType];
