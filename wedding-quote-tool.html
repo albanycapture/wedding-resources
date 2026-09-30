@@ -442,12 +442,12 @@ let finalMultiplier = 1.0;
 let discounts = [];
 
 if (usePhoto && useVideo) {
-  finalMultiplier *= 0.85;
-  discounts.push("15% Bundle");
+  finalMultiplier *= 0.95;
+  discounts.push("5% Bundle");
 }
 if (isEarlyBooking) {
-  finalMultiplier *= 0.90;
-  discounts.push("10% Early Booking");
+  finalMultiplier *= 0.95;
+  discounts.push("5% Early Booking");
 }
 
 subtotal *= finalMultiplier;
