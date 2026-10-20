@@ -229,7 +229,7 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
   <div class="service-card-header">
     <div>
       <p class="service-card-title">Photography</p>
-      <span class="service-card-price">From $100 / hr</span>
+      <span class="service-card-price" id="photoPrice">Priced by your date</span>
     </div>
     <div class="service-card-check" id="photoCheck">✓</div>
   </div>
@@ -249,7 +249,7 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
   <div class="service-card-header">
     <div>
       <p class="service-card-title">Videography</p>
-      <span class="service-card-price">From $150 / hr</span>
+      <span class="service-card-price" id="videoPrice">Priced by your date</span>
     </div>
     <div class="service-card-check" id="videoCheck">✓</div>
   </div>
@@ -414,6 +414,10 @@ const isHoliday = holidays.includes(dateVal);
 
 let photoRate = isHoliday ? pricing.holiday[dayType] : pricing.photo[season][dayType];
 let videoRate = isHoliday ? pricing.holiday[dayType] : pricing.video[season][dayType];
+
+// Show the exact hourly rate for the chosen date on each service card
+document.getElementById('photoPrice').innerText = "$" + photoRate + " / hr";
+document.getElementById('videoPrice').innerText = "$" + videoRate + " / hr";
 
 let subtotal = 0;
 const usePhoto = document.getElementById('photo').checked;
