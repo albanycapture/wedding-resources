@@ -128,7 +128,7 @@
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 4px;
+  height: 6px;
   background: linear-gradient(to right, var(--gold) 0%, var(--gold) 50%, #e8e0d5 50%, #e8e0d5 100%);
   border-radius: 99px;
   outline: none;
@@ -137,8 +137,8 @@
 }
 .hour-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: white;
   border: 2px solid var(--gold);
@@ -156,16 +156,18 @@
   box-shadow: 0 0 0 5px rgba(175, 147, 93, 0.15);
 }
 .hour-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: white;
   border: 2px solid var(--gold);
   box-shadow: 0 2px 8px rgba(175, 147, 93, 0.25);
   cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+.hour-slider::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.1); }
 .hour-slider::-moz-range-track {
-  height: 4px;
+  height: 6px;
   border-radius: 99px;
   background: #e8e0d5;
 }
@@ -178,8 +180,12 @@
   margin-top: 4px;
 }
 
-body { font-family: 'Segoe UI', sans-serif; background: #f9f9f9; color: var(--dark); padding: 20px; line-height: 1.6; }
-.calc-card { max-width: 500px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; }
+body { font-family: 'Segoe UI', sans-serif; background: #f9f9f9; color: var(--dark); padding: 24px; line-height: 1.6; }
+.calc-card { max-width: 760px; margin: auto; background: white; padding: 48px 56px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; }
+@media (max-width: 640px) {
+  body { padding: 10px; }
+  .calc-card { padding: 28px 20px; border-radius: 10px; }
+}
 h2 { border-bottom: 2px solid var(--gold); padding-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 3px; font-weight: 300; margin-top: 0; }
 .label-head { display: block; text-align: center; font-size: 0.75em; font-weight: bold; letter-spacing: 2px; margin: 20px 0 8px; text-transform: uppercase; color: #777; }
 input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background: #fafafa; }
@@ -220,6 +226,32 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 .addon-item:last-child { margin-bottom: 0; }
 .addon-note { font-size: 0.76em; color: #a99d86; line-height: 1.45; margin: 2px 0 0 30px; }
 .addon-select { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 4px; font-size: 0.9rem; background: #fafafa; color: #555; margin-top: 8px; }
+
+/* Date hero — the couple's big moment */
+.date-hero { text-align: center; margin: 6px 0 10px; }
+.date-hero-label { display: block; font-family: 'Georgia', serif; font-size: 1.5em; color: var(--dark); letter-spacing: 1px; margin-bottom: 16px; }
+#weddingDate {
+  font-family: 'Georgia', serif;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 22px 20px;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  background: var(--gold-light);
+  color: var(--dark);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease;
+}
+#weddingDate:hover { box-shadow: 0 6px 20px rgba(175,147,93,0.22); }
+#weddingDate:focus { outline: none; box-shadow: 0 0 0 4px rgba(175,147,93,0.18); }
+#weddingDate::-webkit-calendar-picker-indicator { cursor: pointer; transform: scale(1.5); margin-left: 10px; opacity: 0.65; }
+#weddingDate::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
+/* Add-on slider row (replaces the old dropdowns) */
+.addon-slider { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.addon-slider .hour-slider { flex: 1; }
+.addon-slider-val { font-family: 'Georgia', serif; font-size: 1.05em; color: var(--dark); min-width: 64px; text-align: right; }
 </style>
 </head>
 <body>
@@ -227,9 +259,11 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 <div class="calc-card" id="quote-content">
 <h2>Design Your Coverage</h2>
 
-<span class="label-head">Wedding Date</span>
+<div class="date-hero">
+<span class="date-hero-label">When's the big day?</span>
 <input type="date" id="weddingDate">
-<p id="dateHint" class="date-hint">Please select your wedding date to begin.</p>
+<p id="dateHint" class="date-hint">Choose your date to begin designing your coverage.</p>
+</div>
 
 <div id="lockable" class="locked">
 
@@ -263,19 +297,11 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
         <label class="checkbox-group"><input type="checkbox" class="addon" id="secondPhoto"> Second Photographer</label>
         <div class="addon-note">A second shooter for more angles &amp; candid moments. Recommended for separate getting-ready locations, extra perspectives, or 100+ guests.</div>
         <div id="secondPhotoHoursWrap" style="display:none;">
-          <select id="secondPhotoHours" class="addon-select">
-            <option value="">— Select hours ($85/hr) —</option>
-            <option value="3">3 hours</option>
-            <option value="4">4 hours</option>
-            <option value="5">5 hours</option>
-            <option value="6">6 hours</option>
-            <option value="7">7 hours</option>
-            <option value="8">8 hours</option>
-            <option value="9">9 hours</option>
-            <option value="10">10 hours</option>
-            <option value="11">11 hours</option>
-            <option value="12">12 hours</option>
-          </select>
+          <div class="addon-slider">
+            <input type="range" class="hour-slider" id="secondPhotoHours" min="3" max="12" value="6" step="1"
+              oninput="updateAddon('secondPhotoHours', this.value)">
+            <span class="addon-slider-val"><span id="secondPhotoHoursVal">6</span> hrs</span>
+          </div>
         </div>
       </div>
 
@@ -283,19 +309,11 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
         <label class="checkbox-group"><input type="checkbox" class="addon" id="filmPhoto"> Film Photography</label>
         <div class="addon-note">Classic 35mm film for a timeless, nostalgic look. <strong>$70 per roll</strong> (36 frames each).</div>
         <div id="filmPhotoWrap" style="display:none;">
-          <select id="filmRolls" class="addon-select">
-            <option value="">— Number of rolls —</option>
-            <option value="1">1 roll</option>
-            <option value="2">2 rolls</option>
-            <option value="3">3 rolls</option>
-            <option value="4">4 rolls</option>
-            <option value="5">5 rolls</option>
-            <option value="6">6 rolls</option>
-            <option value="7">7 rolls</option>
-            <option value="8">8 rolls</option>
-            <option value="9">9 rolls</option>
-            <option value="10">10 rolls</option>
-          </select>
+          <div class="addon-slider">
+            <input type="range" class="hour-slider" id="filmRolls" min="1" max="10" value="2" step="1"
+              oninput="updateAddon('filmRolls', this.value)">
+            <span class="addon-slider-val"><span id="filmRollsVal">2</span> rolls</span>
+          </div>
         </div>
       </div>
     </div>
@@ -330,19 +348,11 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
         <label class="checkbox-group"><input type="checkbox" class="addon" id="secondVideo"> Second Videographer</label>
         <div class="addon-note">A second videographer for fuller coverage &amp; unique angles. Recommended for 100+ guests or separate getting-ready locations.</div>
         <div id="secondVideoHoursWrap" style="display:none;">
-          <select id="secondVideoHours" class="addon-select">
-            <option value="">— Select hours ($125/hr) —</option>
-            <option value="3">3 hours</option>
-            <option value="4">4 hours</option>
-            <option value="5">5 hours</option>
-            <option value="6">6 hours</option>
-            <option value="7">7 hours</option>
-            <option value="8">8 hours</option>
-            <option value="9">9 hours</option>
-            <option value="10">10 hours</option>
-            <option value="11">11 hours</option>
-            <option value="12">12 hours</option>
-          </select>
+          <div class="addon-slider">
+            <input type="range" class="hour-slider" id="secondVideoHours" min="3" max="12" value="6" step="1"
+              oninput="updateAddon('secondVideoHours', this.value)">
+            <span class="addon-slider-val"><span id="secondVideoHoursVal">6</span> hrs</span>
+          </div>
         </div>
       </div>
     </div>
@@ -450,13 +460,23 @@ function toggleService(service) {
   calculate();
 }
 
-// Slider update
+// Paint the gold fill up to the thumb for any slider
+function fillSlider(slider) {
+  const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${pct}%, #e8e0d5 ${pct}%, #e8e0d5 100%)`;
+}
+
+// Main service slider (Photography / Videography / Content Creator)
 function updateSlider(service, value) {
   document.getElementById(service + 'HoursDisplay').innerText = value;
-  // Update gradient fill
-  const slider = document.getElementById(service + 'Hours');
-  const pct = ((value - slider.min) / (slider.max - slider.min)) * 100;
-  slider.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${pct}%, #e8e0d5 ${pct}%, #e8e0d5 100%)`;
+  fillSlider(document.getElementById(service + 'Hours'));
+  calculate();
+}
+
+// Add-on slider (Second Photographer, Second Videographer, Film rolls)
+function updateAddon(id, value) {
+  document.getElementById(id + 'Val').innerText = value;
+  fillSlider(document.getElementById(id));
   calculate();
 }
 
@@ -702,25 +722,19 @@ emailjs.send('service_vthnr9p', 'template_if84i1q', clientParams)
 
 });
 
-// Show/hide add-on inputs when their checkbox toggles
+// Show/hide add-on sliders when their checkbox toggles
 document.getElementById('secondPhoto').addEventListener('change', function() {
   document.getElementById('secondPhotoHoursWrap').style.display = this.checked ? 'block' : 'none';
-  if (!this.checked) document.getElementById('secondPhotoHours').value = '';
   calculate();
 });
 document.getElementById('filmPhoto').addEventListener('change', function() {
   document.getElementById('filmPhotoWrap').style.display = this.checked ? 'block' : 'none';
-  if (!this.checked) document.getElementById('filmRolls').value = '';
   calculate();
 });
 document.getElementById('secondVideo').addEventListener('change', function() {
   document.getElementById('secondVideoHoursWrap').style.display = this.checked ? 'block' : 'none';
-  if (!this.checked) document.getElementById('secondVideoHours').value = '';
   calculate();
 });
-document.getElementById('secondPhotoHours').addEventListener('change', calculate);
-document.getElementById('filmRolls').addEventListener('change', calculate);
-document.getElementById('secondVideoHours').addEventListener('change', calculate);
 
 document.querySelectorAll('input').forEach(el => el.addEventListener('change', calculate));
 
@@ -734,6 +748,8 @@ document.getElementById('weddingDate').addEventListener('change', updateLock);
 document.getElementById('weddingDate').addEventListener('input', updateLock);
 
 updateLock();
+// Paint the gold fill on every slider at its starting value
+document.querySelectorAll('.hour-slider').forEach(fillSlider);
 calculate();
 
 </script>
