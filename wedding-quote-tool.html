@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 Wedding Quote Tool | Albany Capture</title>
-<meta name="description" content="Get an instant quote for Chicago wedding photography and videography. Calculate rates for 2026 weddings.">
+<title>2027 Wedding Quote Tool | Albany Capture</title>
+<meta name="description" content="Get an instant quote for Chicago wedding photography and videography. Calculate rates for 2027 weddings.">
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -481,7 +481,10 @@ function updateAddon(id, value) {
 }
 
 // Pricing Logic
-const holidays = ["2026-01-01", "2026-07-04", "2026-12-25", "2026-12-31"];
+const holidays = [
+  "2026-01-01", "2026-07-04", "2026-12-25", "2026-12-31",
+  "2027-01-01", "2027-07-04", "2027-12-25", "2027-12-31"
+];
 
 const pricing = {
 photo: { low: { weekday: 100, friSun: 200, sat: 250 }, high: { weekday: 150, friSun: 225, sat: 350 } },
@@ -573,7 +576,7 @@ const inquiryForm = document.getElementById('inquiryForm');
 actionButtons.style.display = 'none';
 const formWasVisible = inquiryForm.style.display === 'block';
 inquiryForm.style.display = 'none';
-const opt = { margin: 0.5, filename: 'Wedding_Quote_2026.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+const opt = { margin: 0.5, filename: 'Wedding_Quote_2027.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
 html2pdf().set(opt).from(element).save().then(() => {
 actionButtons.style.display = 'block';
 if(formWasVisible) inquiryForm.style.display = 'block';
