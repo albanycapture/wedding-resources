@@ -259,6 +259,14 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 .addon-slider { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
 .addon-slider .hour-slider { flex: 1; }
 .addon-slider-val { font-family: 'Georgia', serif; font-size: 1.05em; color: var(--dark); min-width: 64px; text-align: right; }
+
+/* Deposit + payment reassurance under the total */
+.deposit-box { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #e2d4bb; }
+.deposit-line { font-size: 0.8em; color: #857c6c; letter-spacing: 0.3px; }
+.deposit-line strong { color: var(--dark); font-weight: 600; }
+.deposit-amount { font-family: 'Georgia', serif; font-size: 1.6em; color: var(--gold); font-weight: bold; margin: 2px 0 10px; }
+.deposit-note { font-size: 0.72em; color: #a99d86; line-height: 1.6; letter-spacing: 0.2px; }
+.deposit-note strong { color: var(--gold); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -398,6 +406,12 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 <strong>Estimated Investment</strong>
 <span id="total-price">$0</span>
 <div style="text-align:center;"><span id="discount-display" class="discount-badge" style="display:none;"></span></div>
+
+<div class="deposit-box" id="deposit-box" style="display:none;">
+  <div class="deposit-line">Reserve your date with a <strong>50% deposit</strong> — about</div>
+  <div class="deposit-amount">~<span id="deposit-amount">$0</span></div>
+  <div class="deposit-note">Pay over time with <strong>Affirm</strong> or <strong>Klarna</strong>, or use Apple Pay, card, bank transfer, PayPal, Zelle &amp; Venmo. The remaining balance is due before your wedding day.</div>
+</div>
 <p style="font-size:0.72em;color:#aaa;margin:14px 0 0 0;line-height:1.6;letter-spacing:0.3px;">
   This is an estimate only and subject to change based on your specific event details.
   <a href="https://calendly.albanycapture.com/#/albanycapturevirtual" target="_blank"
@@ -573,6 +587,15 @@ if (finalMultiplier < 1.0) {
 }
 
 document.getElementById('total-price').innerText = "$" + Math.round(subtotal).toLocaleString();
+
+// Live 50% deposit — reframes the number and shows only once something is selected
+const depositBox = document.getElementById('deposit-box');
+if (subtotal > 0) {
+  document.getElementById('deposit-amount').innerText = "$" + Math.round(subtotal / 2).toLocaleString();
+  depositBox.style.display = 'block';
+} else {
+  depositBox.style.display = 'none';
+}
 }
 
 // PDF Download
