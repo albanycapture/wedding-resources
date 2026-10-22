@@ -232,9 +232,10 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 .date-hero-label { display: block; font-family: 'Georgia', serif; font-size: 1.5em; color: var(--dark); letter-spacing: 1px; margin-bottom: 16px; }
 #weddingDate {
   font-family: 'Georgia', serif;
-  font-size: 1.5em;
-  text-align: center;
-  padding: 22px 20px;
+  font-size: 1.3em;
+  padding: 20px 16px;
+  min-height: 66px;
+  line-height: 1.2;
   border: 2px solid var(--gold);
   border-radius: 12px;
   background: var(--gold-light);
@@ -243,10 +244,16 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
   cursor: pointer;
   transition: box-shadow 0.25s ease;
 }
+/* Center the date value the iOS-safe way (text-align:center clips it on iPhone) */
+#weddingDate::-webkit-date-and-time-value { text-align: center; width: 100%; margin: 0; }
+#weddingDate::-webkit-datetime-edit { text-align: center; }
 #weddingDate:hover { box-shadow: 0 6px 20px rgba(175,147,93,0.22); }
 #weddingDate:focus { outline: none; box-shadow: 0 0 0 4px rgba(175,147,93,0.18); }
-#weddingDate::-webkit-calendar-picker-indicator { cursor: pointer; transform: scale(1.5); margin-left: 10px; opacity: 0.65; }
+#weddingDate::-webkit-calendar-picker-indicator { cursor: pointer; transform: scale(1.4); margin-left: 8px; opacity: 0.65; }
 #weddingDate::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+@media (max-width: 640px) {
+  #weddingDate { font-size: 1.1em; padding: 18px 12px; min-height: 58px; letter-spacing: 0.5px; }
+}
 
 /* Add-on slider row (replaces the old dropdowns) */
 .addon-slider { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
