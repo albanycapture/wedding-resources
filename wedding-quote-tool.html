@@ -210,6 +210,16 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 #lockable { transition: opacity 0.3s ease; }
 #lockable.locked { opacity: 0.4; pointer-events: none; user-select: none; filter: grayscale(0.35); }
 .date-hint { text-align: center; font-size: 0.8em; color: var(--gold); font-style: italic; margin: 12px 0 0; }
+
+/* Service "what's included" blurb + nested add-ons */
+.service-desc { font-size: 0.82em; color: #857c6c; line-height: 1.55; margin: 16px 0 0; }
+.service-desc strong { color: var(--dark); font-weight: 600; }
+.addon-wrap { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #e2d4bb; }
+.addon-label { display: block; font-size: 0.68em; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #a08b63; margin-bottom: 10px; }
+.addon-item { margin-bottom: 14px; }
+.addon-item:last-child { margin-bottom: 0; }
+.addon-note { font-size: 0.76em; color: #a99d86; line-height: 1.45; margin: 2px 0 0 30px; }
+.addon-select { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 4px; font-size: 0.9rem; background: #fafafa; color: #555; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -223,8 +233,9 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
 
 <div id="lockable" class="locked">
 
-<span class="label-head">Services Needed</span>
+<span class="label-head">Build Your Coverage</span>
 
+<!-- ===== PHOTOGRAPHY ===== -->
 <div class="service-card" id="photoCard" onclick="toggleService('photo')">
   <div class="service-card-header">
     <div>
@@ -242,9 +253,56 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
       oninput="updateSlider('photo', this.value)" onclick="event.stopPropagation()">
     <div class="slider-range"><span>3 hrs</span><span>12 hrs</span></div>
     <small style="display:block;text-align:center;color:#aaa;font-size:0.72em;margin-top:8px;letter-spacing:1px;">3-hour minimum on all services</small>
+
+    <p class="service-desc">Includes about <strong>50 edited photos per hour</strong>. Every image is hand-finished — color &amp; lighting balanced, distracting objects removed, and soft, natural skin retouching.</p>
+
+    <div class="addon-wrap">
+      <span class="addon-label">Photography Add-Ons</span>
+
+      <div class="addon-item">
+        <label class="checkbox-group"><input type="checkbox" class="addon" id="secondPhoto"> Second Photographer</label>
+        <div class="addon-note">A second shooter for more angles &amp; candid moments. Recommended for separate getting-ready locations, extra perspectives, or 100+ guests.</div>
+        <div id="secondPhotoHoursWrap" style="display:none;">
+          <select id="secondPhotoHours" class="addon-select">
+            <option value="">— Select hours ($85/hr) —</option>
+            <option value="3">3 hours</option>
+            <option value="4">4 hours</option>
+            <option value="5">5 hours</option>
+            <option value="6">6 hours</option>
+            <option value="7">7 hours</option>
+            <option value="8">8 hours</option>
+            <option value="9">9 hours</option>
+            <option value="10">10 hours</option>
+            <option value="11">11 hours</option>
+            <option value="12">12 hours</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="addon-item">
+        <label class="checkbox-group"><input type="checkbox" class="addon" id="filmPhoto"> Film Photography</label>
+        <div class="addon-note">Classic 35mm film for a timeless, nostalgic look. <strong>$70 per roll</strong> (36 frames each).</div>
+        <div id="filmPhotoWrap" style="display:none;">
+          <select id="filmRolls" class="addon-select">
+            <option value="">— Number of rolls —</option>
+            <option value="1">1 roll</option>
+            <option value="2">2 rolls</option>
+            <option value="3">3 rolls</option>
+            <option value="4">4 rolls</option>
+            <option value="5">5 rolls</option>
+            <option value="6">6 rolls</option>
+            <option value="7">7 rolls</option>
+            <option value="8">8 rolls</option>
+            <option value="9">9 rolls</option>
+            <option value="10">10 rolls</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- ===== VIDEOGRAPHY ===== -->
 <div class="service-card" id="videoCard" onclick="toggleService('video')">
   <div class="service-card-header">
     <div>
@@ -262,49 +320,62 @@ input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-rad
       oninput="updateSlider('video', this.value)" onclick="event.stopPropagation()">
     <div class="slider-range"><span>3 hrs</span><span>12 hrs</span></div>
     <small style="display:block;text-align:center;color:#aaa;font-size:0.72em;margin-top:8px;letter-spacing:1px;">3-hour minimum on all services</small>
+
+    <p class="service-desc">One videographer filming in <strong>4K</strong> with external microphones &amp; ceremony spot-lighting. Includes three edited films: a 15-second social clip, a 2-minute highlight recap, and a 40-minute ceremony &amp; reception film. Questions about the films? We'll walk you through it.</p>
+
+    <div class="addon-wrap">
+      <span class="addon-label">Videography Add-Ons</span>
+
+      <div class="addon-item">
+        <label class="checkbox-group"><input type="checkbox" class="addon" id="secondVideo"> Second Videographer</label>
+        <div class="addon-note">A second videographer for fuller coverage &amp; unique angles. Recommended for 100+ guests or separate getting-ready locations.</div>
+        <div id="secondVideoHoursWrap" style="display:none;">
+          <select id="secondVideoHours" class="addon-select">
+            <option value="">— Select hours ($125/hr) —</option>
+            <option value="3">3 hours</option>
+            <option value="4">4 hours</option>
+            <option value="5">5 hours</option>
+            <option value="6">6 hours</option>
+            <option value="7">7 hours</option>
+            <option value="8">8 hours</option>
+            <option value="9">9 hours</option>
+            <option value="10">10 hours</option>
+            <option value="11">11 hours</option>
+            <option value="12">12 hours</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Hidden checkboxes for backward compat with calculate() -->
+<!-- ===== CONTENT CREATOR (its own service) ===== -->
+<div class="service-card" id="contentCard" onclick="toggleService('content')">
+  <div class="service-card-header">
+    <div>
+      <p class="service-card-title">Content Creator</p>
+      <span class="service-card-price">$150 / hr</span>
+    </div>
+    <div class="service-card-check" id="contentCheck">✓</div>
+  </div>
+  <div class="service-hours-panel" onclick="event.stopPropagation()">
+    <div class="slider-label">
+      <span>Hours of Coverage</span>
+      <strong><span id="contentHoursDisplay">6</span> hrs</strong>
+    </div>
+    <input type="range" class="hour-slider" id="contentHours" min="3" max="12" value="6" step="1"
+      oninput="updateSlider('content', this.value)" onclick="event.stopPropagation()">
+    <div class="slider-range"><span>3 hrs</span><span>12 hrs</span></div>
+    <small style="display:block;text-align:center;color:#aaa;font-size:0.72em;margin-top:8px;letter-spacing:1px;">3-hour minimum on all services</small>
+
+    <p class="service-desc">Candid, in-the-moment content — one creator with an <strong>iPhone Pro (or newer)</strong> grabbing short clips throughout your day for a relaxed, unobtrusive feel. Includes <strong>two planned reels</strong>, edited to your liking.</p>
+  </div>
+</div>
+
+<!-- Hidden checkboxes track which services are selected -->
 <input type="checkbox" id="photo" style="display:none;">
 <input type="checkbox" id="video" style="display:none;">
-<input type="number" id="hours" style="display:none;" value="6">
-
-<span class="label-head">Add-Ons</span>
-
-<div class="checkbox-group"><input type="checkbox" class="addon" id="secondPhoto"> Second Photographer</div>
-<div id="secondPhotoHoursWrap" style="display:none;margin:0 0 10px 28px;">
-  <select id="secondPhotoHours" style="width:100%;padding:10px;border:1px solid #eee;border-radius:4px;font-size:0.9rem;background:#fafafa;color:#555;">
-    <option value="">— Select hours —</option>
-    <option value="3">3 hours</option>
-    <option value="4">4 hours</option>
-    <option value="5">5 hours</option>
-    <option value="6">6 hours</option>
-    <option value="7">7 hours</option>
-    <option value="8">8 hours</option>
-    <option value="9">9 hours</option>
-    <option value="10">10 hours</option>
-    <option value="11">11 hours</option>
-    <option value="12">12 hours</option>
-  </select>
-</div>
-
-<div class="checkbox-group"><input type="checkbox" class="addon" id="contentCreator"> Content Creator</div>
-<div id="contentCreatorHoursWrap" style="display:none;margin:0 0 10px 28px;">
-  <select id="contentCreatorHours" style="width:100%;padding:10px;border:1px solid #eee;border-radius:4px;font-size:0.9rem;background:#fafafa;color:#555;">
-    <option value="">— Select hours —</option>
-    <option value="3">3 hours</option>
-    <option value="4">4 hours</option>
-    <option value="5">5 hours</option>
-    <option value="6">6 hours</option>
-    <option value="7">7 hours</option>
-    <option value="8">8 hours</option>
-    <option value="9">9 hours</option>
-    <option value="10">10 hours</option>
-    <option value="11">11 hours</option>
-    <option value="12">12 hours</option>
-  </select>
-</div>
+<input type="checkbox" id="content" style="display:none;">
 
 <div class="total-box">
 <strong>Estimated Investment</strong>
@@ -405,7 +476,6 @@ if (!dateVal) return;
 const date = new Date(dateVal + 'T00:00:00');
 const month = date.getMonth();
 const day = date.getDay();
-const hours = Math.max(3, parseFloat(document.getElementById('hours').value) || 3); // kept for add-on fallback
 
 const isHighSeason = (month >= 4 && month <= 9);
 const season = isHighSeason ? 'high' : 'low';
@@ -419,26 +489,29 @@ let videoRate = isHoliday ? pricing.holiday[dayType] : pricing.video[season][day
 document.getElementById('photoPrice').innerText = "$" + photoRate + " / hr";
 document.getElementById('videoPrice').innerText = "$" + videoRate + " / hr";
 
-let subtotal = 0;
 const usePhoto = document.getElementById('photo').checked;
 const useVideo = document.getElementById('video').checked;
+const useContent = document.getElementById('content').checked;
 const photoHrs = parseFloat(document.getElementById('photoHours').value) || 6;
 const videoHrs = parseFloat(document.getElementById('videoHours').value) || 6;
+const contentHrs = parseFloat(document.getElementById('contentHours').value) || 6;
 
+// --- Discountable subtotal: primary services + labor add-ons ---
+let subtotal = 0;
 if (usePhoto) subtotal += (photoRate * photoHrs);
 if (useVideo) subtotal += (videoRate * videoHrs);
+if (useContent) subtotal += (150 * contentHrs);
 
-// Add-Ons — added to the subtotal BEFORE discounts so they get discounted too
-if (document.getElementById('secondPhoto').checked) {
-  const spHrs = parseFloat(document.getElementById('secondPhotoHours').value) || 0;
-  subtotal += (85 * spHrs);
+// Second Photographer ($85/hr) — only counts when Photography is selected
+if (usePhoto && document.getElementById('secondPhoto').checked) {
+  subtotal += (85 * (parseFloat(document.getElementById('secondPhotoHours').value) || 0));
 }
-if (document.getElementById('contentCreator').checked) {
-  const ccHrs = parseFloat(document.getElementById('contentCreatorHours').value) || 0;
-  subtotal += (150 * ccHrs);
+// Second Videographer ($125/hr) — only counts when Videography is selected
+if (useVideo && document.getElementById('secondVideo').checked) {
+  subtotal += (125 * (parseFloat(document.getElementById('secondVideoHours').value) || 0));
 }
 
-// Discount Logic — applies to everything above (services + add-ons); discounts stack
+// --- Discounts (stack), applied to the discountable subtotal only ---
 const now = new Date();
 const sixMonthsOut = new Date(now.setMonth(now.getMonth() + 6));
 const isEarlyBooking = new Date(dateVal) > sixMonthsOut;
@@ -455,6 +528,11 @@ if (isEarlyBooking) {
 }
 
 subtotal *= finalMultiplier;
+
+// Film Photography ($70/roll) — physical product, NOT discounted; added after
+if (usePhoto && document.getElementById('filmPhoto').checked) {
+  subtotal += (70 * (parseFloat(document.getElementById('filmRolls').value) || 0));
+}
 
 const badge = document.getElementById('discount-display');
 if (finalMultiplier < 1.0) {
@@ -508,25 +586,22 @@ submitBtn.style.cursor = 'not-allowed';
 let services = [];
 let hasPhoto = document.getElementById('photo').checked;
 let hasVideo = document.getElementById('video').checked;
+let hasContent = document.getElementById('content').checked;
 
-if (hasPhoto) {
-  const hrs = document.getElementById('photoHours').value || '6';
-  services.push("Photography (" + hrs + " hrs)");
-}
-if (hasVideo) {
-  const hrs = document.getElementById('videoHours').value || '6';
-  services.push("Videography (" + hrs + " hrs)");
-}
+if (hasPhoto) services.push("Photography (" + (document.getElementById('photoHours').value || '6') + " hrs)");
+if (hasVideo) services.push("Videography (" + (document.getElementById('videoHours').value || '6') + " hrs)");
+if (hasContent) services.push("Content Creator (" + (document.getElementById('contentHours').value || '6') + " hrs)");
 
 // 2. Build Add-Ons
 let addons = [];
-if (document.getElementById('secondPhoto').checked) {
-  const spHrs = document.getElementById('secondPhotoHours').value || '?';
-  addons.push("Second Photographer (" + spHrs + " hrs)");
+if (hasPhoto && document.getElementById('secondPhoto').checked) {
+  addons.push("Second Photographer (" + (document.getElementById('secondPhotoHours').value || '?') + " hrs)");
 }
-if (document.getElementById('contentCreator').checked) {
-  const ccHrs = document.getElementById('contentCreatorHours').value || '?';
-  addons.push("Content Creator (" + ccHrs + " hrs)");
+if (hasPhoto && document.getElementById('filmPhoto').checked) {
+  addons.push("Film Photography (" + (document.getElementById('filmRolls').value || '?') + " rolls)");
+}
+if (hasVideo && document.getElementById('secondVideo').checked) {
+  addons.push("Second Videographer (" + (document.getElementById('secondVideoHours').value || '?') + " hrs)");
 }
 
 // 3. --- GALLERY LOGIC ---
@@ -553,9 +628,11 @@ user_last_name:  document.getElementById('user_last_name').value,
 user_email:    document.getElementById('user_email').value,
 user_phone:    document.getElementById('user_phone').value || 'Not provided',
 wedding_date:  document.getElementById('weddingDate').value,
-hours:         (hasPhoto ? 'Photo: ' + (document.getElementById('photoHours').value || '?') + ' hrs' : '') +
-               (hasPhoto && hasVideo ? ' / ' : '') +
-               (hasVideo ? 'Video: ' + (document.getElementById('videoHours').value || '?') + ' hrs' : ''),
+hours:         [
+                 hasPhoto ? 'Photo: ' + (document.getElementById('photoHours').value || '?') + ' hrs' : '',
+                 hasVideo ? 'Video: ' + (document.getElementById('videoHours').value || '?') + ' hrs' : '',
+                 hasContent ? 'Content: ' + (document.getElementById('contentHours').value || '?') + ' hrs' : ''
+               ].filter(Boolean).join(' / '),
 quote_amount:  document.getElementById('total-price').innerText + " (" + currentDiscount + ")",
 message:       document.getElementById('message').value,
 services_list: services.join(", ") || "No Services Selected",
@@ -625,19 +702,25 @@ emailjs.send('service_vthnr9p', 'template_if84i1q', clientParams)
 
 });
 
-// Show/hide addon hour dropdowns
+// Show/hide add-on inputs when their checkbox toggles
 document.getElementById('secondPhoto').addEventListener('change', function() {
   document.getElementById('secondPhotoHoursWrap').style.display = this.checked ? 'block' : 'none';
   if (!this.checked) document.getElementById('secondPhotoHours').value = '';
   calculate();
 });
-document.getElementById('contentCreator').addEventListener('change', function() {
-  document.getElementById('contentCreatorHoursWrap').style.display = this.checked ? 'block' : 'none';
-  if (!this.checked) document.getElementById('contentCreatorHours').value = '';
+document.getElementById('filmPhoto').addEventListener('change', function() {
+  document.getElementById('filmPhotoWrap').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('filmRolls').value = '';
+  calculate();
+});
+document.getElementById('secondVideo').addEventListener('change', function() {
+  document.getElementById('secondVideoHoursWrap').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('secondVideoHours').value = '';
   calculate();
 });
 document.getElementById('secondPhotoHours').addEventListener('change', calculate);
-document.getElementById('contentCreatorHours').addEventListener('change', calculate);
+document.getElementById('filmRolls').addEventListener('change', calculate);
+document.getElementById('secondVideoHours').addEventListener('change', calculate);
 
 document.querySelectorAll('input').forEach(el => el.addEventListener('change', calculate));
 
