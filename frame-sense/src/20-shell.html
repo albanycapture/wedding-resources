@@ -1,0 +1,78 @@
+<div class="app" id="app">
+
+  <section class="screen" data-screen="home">
+    <div class="wrap">
+      <header class="mast">
+        <div class="brand">
+          <svg viewBox="0 0 30 30" aria-hidden="true"><path d="M2 9V2h7M21 2h7v7M28 21v7h-7M9 28H2v-7" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="10" y="10" width="10" height="10" fill="var(--marker)"/></svg>
+          <h1>Frame Sense</h1>
+        </div>
+        <div class="mast-tools">
+          <button class="btn btn-quiet" id="btnGuide" type="button">Guide</button>
+          <button class="btn btn-quiet" id="btnSound" type="button" aria-pressed="true">Sound on</button>
+        </div>
+      </header>
+      <div id="nextUp"></div>
+      <div class="sheet" id="sheet"></div>
+      <div class="cards" id="side"></div>
+      <div class="foot" id="foot"></div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="level" hidden><div class="wrap" id="levelBody"></div></section>
+
+  <section class="screen drill" data-screen="drill" hidden>
+    <header class="bar">
+      <button class="x" id="drillExit" type="button" aria-label="Leave this run">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="bar-title"><b id="drillName"></b><div class="pips" id="pips"></div></div>
+      <div class="readout" id="readout"></div>
+    </header>
+    <div class="stage" id="stage">
+      <div class="frames" id="frames"></div>
+      <button class="btn btn-primary stage-next" id="btnNext" type="button" hidden>Next <kbd>↵</kbd></button>
+      <div class="leave" id="leave" hidden>
+        <div class="leave-card" role="dialog" aria-labelledby="leaveTitle">
+          <b id="leaveTitle">Leave this run?</b>
+          <p>The frames you have answered will not count.</p>
+          <div class="row">
+            <button class="btn btn-primary" id="btnStay" type="button">Keep shooting</button>
+            <button class="btn" id="btnLeave" type="button">Leave</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="console"><div class="console-in" id="console"></div></div>
+    <div class="sr" id="live" aria-live="polite"></div>
+  </section>
+
+  <section class="screen" data-screen="result" hidden><div class="wrap" id="resultBody"></div></section>
+
+  <section class="screen" data-screen="guide" hidden><div class="wrap" id="guideBody"></div></section>
+
+  <section class="screen lab" data-screen="lab" hidden>
+    <header class="bar">
+      <button class="x" id="labExit" type="button" aria-label="Back to the roll">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="bar-title"><b>Crop Lab</b></div>
+      <div class="readout">
+        <input class="sr" type="file" id="labFile" accept="image/*" multiple tabindex="-1">
+        <button class="btn btn-primary" id="labAdd" type="button">Add photos</button>
+      </div>
+    </header>
+    <div class="lab-tray" id="labTray" hidden></div>
+    <div class="stage" id="labStage">
+      <div class="frames" id="labFrames"></div>
+      <div class="lab-empty" id="labEmpty">
+        <b>Practise on your own frames</b>
+        <p>Add a few photos and re-crop them for every delivery ratio. They stay on this device and are never uploaded.</p>
+        <button class="btn btn-primary" id="labAdd2" type="button">Add photos</button>
+      </div>
+    </div>
+    <div class="console"><div class="console-in" id="labConsole"></div></div>
+  </section>
+
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
