@@ -50,7 +50,13 @@ async function pushRemote() {
   if (!Sync.doc || Sync.busy || !Sync.dirty) return;
   Sync.busy = true; Sync.dirty = false;
   try { await Sync.doc.set(JSON.parse(JSON.stringify(P))); Sync.state = 'synced'; }
-  catch (e) { Sync.state = 'local'; }
+  catch (e) {
+    /* A viewer who may not write (for example someone the page was shared with view-only)
+       is refused here. Stop asking for the rest of the visit; the browser copy carries on. */
+    Sync.state = 'local';
+    const code = e && e.code;
+    if (code !== 'unavailable' && code !== 'resource_exhausted') Sync.doc = null;
+  }
   Sync.busy = false;
   if (Sync.dirty) pushRemote();
   if (typeof onSyncChange === 'function') onSyncChange();
@@ -67,7 +73,8 @@ async function connectSync() {
     const snap = await doc.get();
     const before = JSON.stringify(P.levels) + JSON.stringify(P.totals);
     if (snap && snap.exists) P = mergeProgress(P, snap.data());
-    Sync.doc = doc; Sync.state = 'synced';
+    Sync.doc = doc;
+    Sync.state = snap && snap.exists ? 'synced' : 'local';   /* only claim it once the account copy is known to exist */
     saveLocal();
     const after = JSON.stringify(P.levels) + JSON.stringify(P.totals);
     if (!snap || !snap.exists || before !== after || JSON.stringify(snap.data().levels || {}) !== JSON.stringify(P.levels)) { Sync.dirty = true; pushRemote(); }
