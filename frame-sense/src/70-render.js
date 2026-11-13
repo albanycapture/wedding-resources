@@ -227,7 +227,7 @@ function ladderDiagram() {
   const f = figure(Object.assign(p, { cx: 380, footY: 960, h: 880, armL: 'down', armR: 'down' }));
   const safe = [['mid-chest', CUT.tight, 'Tight'], ['below the waist', CUT.waist, 'Waist-up'], ['mid-thigh', CUT.threeq, 'Three-quarter'], ['mid-shin', CUT.shin, ''], ['under the feet', 1.035, 'Full-length']];
   const avoid = [['neck', 0.14], ['elbows', 0.358], ['wrists', 0.495], ['knees', 0.725], ['ankles', 0.945]];
-  let s = `<rect x="0" y="0" width="760" height="1040" fill="#17191c"/>` + f.svg;
+  let s = f.svg;
   const fs = 21;
   for (const a of avoid) {
     const y = f.y(a[1]);
@@ -248,8 +248,7 @@ function ladderDiagram() {
 function ratioDiagram() {
   const W = 900, H = 600, ox = 30, oy = 40;
   const rows = [['7:5', 1.4, '5×7'], ['5:4', 1.25, '8×10'], ['1:1', 1, 'square'], ['4:5', 0.8, 'IG portrait'], ['9:16', 9 / 16, 'Reel']];
-  let s = `<rect x="0" y="0" width="${W + 60}" height="${H + 150}" fill="#17191c"/>`;
-  s += `<rect x="${ox}" y="${oy}" width="${W}" height="${H}" fill="#2a2f35"/>`;
+  let s = `<rect x="${ox}" y="${oy}" width="${W}" height="${H}" fill="#2a2f35"/>`;
   rows.forEach((r, i) => {
     const w = H * r[1], x = ox + (W - w) / 2;
     s += `<rect x="${r1(x)}" y="${oy}" width="${r1(w)}" height="${H}" fill="#fff" fill-opacity="${0.05 + i * 0.012}" stroke="var(--marker)" stroke-width="2"/>`;

@@ -90,8 +90,12 @@ function renderHome() {
   byId('foot').innerHTML = `<span>${Sync.state === 'synced' ? 'Progress is saved to your Claude account.' : 'Progress is saved in this browser.'}</span>` +
     `<button type="button" id="btnOpenAll">${P.settings.openAll ? 'Lock frames again' : 'Open every frame'}</button><button type="button" id="btnReset">Reset progress</button>`;
   const sb = byId('btnSound');
-  sb.setAttribute('aria-pressed', P.settings.sound !== false ? 'true' : 'false');
-  sb.textContent = P.settings.sound !== false ? 'Sound on' : 'Sound off';
+  const snd = P.settings.sound !== false;
+  sb.setAttribute('aria-pressed', snd ? 'true' : 'false');
+  sb.setAttribute('aria-label', snd ? 'Sound is on. Turn it off.' : 'Sound is off. Turn it on.');
+  sb.title = snd ? 'Sound on' : 'Sound off';
+  sb.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/>` +
+    (snd ? `<path d="M15.5 8.8a4.6 4.6 0 0 1 0 6.4M18 6.3a8.2 8.2 0 0 1 0 11.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>` : `<path d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>`) + `</svg>`;
 }
 function onSyncChange() { if (App.screen === 'home') renderHome(); }
 

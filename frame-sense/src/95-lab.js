@@ -128,6 +128,7 @@ function scorePhotoCrop(p, c, a) {
   const maxW = Math.min(p.w, p.h * a), maxH = maxW / a;
   const ix = Math.max(0, Math.min(rRight(S), rRight(c)) - Math.max(S.x, c.x)), iy = Math.max(0, Math.min(rBottom(S), rBottom(c)) - Math.max(S.y, c.y));
   const cover = (ix * iy) / (S.w * S.h), whole = cover > 0.985, canFit = S.w <= maxW && S.h <= maxH;
+  if (cover < 0.02) return { score: 0, notes: [note(false, 'Your subject is outside this crop. Move the box over them.', 0, 100)] };
   if (whole) notes.push(note(true, 'Your subject is whole.', 40, 40));
   else if (!canFit) notes.push(note('part', `This ratio cannot hold the whole subject from this frame. Your crop keeps ${Math.round(cover * 100)}% of it.`, 40 * cover, 40));
   else notes.push(note(false, `The crop cuts into your subject and keeps ${Math.round(cover * 100)}% of it.`, 40 * Math.max(0, cover - 0.5), 40));

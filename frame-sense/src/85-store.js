@@ -89,7 +89,7 @@ function weakSpots(limit) {
   const out = [];
   for (const tag of Object.keys(P.tags)) {
     const t = P.tags[tag];
-    if (!t.last || t.last.length < 3) continue;
+    if (!t.last || t.last.length < 2) continue;
     const miss = t.last.split('').filter(c => c === '0').length / t.last.length;
     if (miss >= 0.2) out.push({ tag, miss, n: t.last.length });
   }
